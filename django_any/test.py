@@ -7,8 +7,8 @@ try:
 except ImportError:
     _strclass = str
 
-import six
 from django import forms
+from django.utils import six
 from django_any import any_form
 from django.test.client import Client as DjangoClient
 from django_any.contrib.auth import any_user
@@ -144,4 +144,4 @@ class WithTestDataSeed(type):
         testcase = super(WithTestDataSeed, cls).__new__(cls, cls_name, bases, attrs)
         testcase.shortDescription = shortDescription
         return testcase
-    
+

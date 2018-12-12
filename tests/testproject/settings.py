@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django_any',
 ]
 
-middlewares = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -51,12 +51,6 @@ middlewares = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-if django.VERSION <= (1, 9):
-    middlewares.append('django.contrib.auth.middleware.SessionAuthenticationMiddleware')
-if django.VERSION >= (1, 10):
-    MIDDLEWARE = middlewares
-else:
-    MIDDLEWARE_CLASSES = middlewares
 
 ROOT_URLCONF = 'testproject.urls'
 

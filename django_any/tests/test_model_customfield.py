@@ -2,9 +2,9 @@
 """
 Test model creation with custom fields
 """
-import six
 from django.db import models
 from django.test import TestCase
+from django.utils import six
 from django_any.models import any_model
 
 

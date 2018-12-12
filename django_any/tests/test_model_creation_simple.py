@@ -5,7 +5,6 @@ Create models will all fields with simply to generate values
 from django.db import models
 from django.test import TestCase
 
-from django_any import compat
 from django_any.models import any_model
 
 
@@ -13,17 +12,13 @@ class SimpleModel(models.Model):
     big_integer_field = models.BigIntegerField()
     char_field = models.CharField(max_length=5)
     boolean_field = models.BooleanField()
-    comma_separated_field = compat.CommaSeparatedIntegerField(max_length=50)
     date_field = models.DateField()
     datetime_field = models.DateTimeField()
     decimal_field = models.DecimalField(decimal_places=2, max_digits=10)
     email_field = models.EmailField()
     float_field = models.FloatField()
     integer_field = models.IntegerField()
-    if compat.ipaddress_field_defined:
-        ip_field = models.IPAddressField()
-    else:
-        ip_field = models.GenericIPAddressField()
+    ip_field = models.GenericIPAddressField()
     null_boolead_field = models.NullBooleanField()
     positive_integer_field = models.PositiveIntegerField()
     small_integer = models.PositiveSmallIntegerField()

@@ -32,17 +32,10 @@ def view(request):
 
     return HttpResponse(template.render(context))
 
-if django.VERSION < (1, 9):
-    from django.conf.urls import patterns, include
-    urlpatterns = patterns('',
-         url(r'^admin/', include(admin.site.urls)),
-         url(r'^view/', view),
-    )
-else:
-    urlpatterns = [
-         url(r'^admin/', admin.site.urls),
-         url(r'^view/', view),
-    ]
+urlpatterns = [
+     url(r'^admin/', admin.site.urls),
+     url(r'^view/', view),
+]
 
 
 @override_settings(ROOT_URLCONF='django_any.tests.test_client')

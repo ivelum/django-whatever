@@ -19,9 +19,6 @@ setup(
     include_package_data=True,
     test_suite="tests.manage",
     zip_safe=False,
-    install_requires=[
-        'six >= 1.10',
-    ],
     setup_requires=[
         'versiontools >= 1.8',
     ],

@@ -11,25 +11,19 @@ from decimal import Decimal
 from datetime import date, datetime, time
 from string import ascii_letters, digits, hexdigits
 
-import six
 from django.conf import settings
 from django.core import validators
 from django.core.exceptions import ValidationError
-from django.core.validators import validate_ipv4_address
+from django.core.validators import validate_ipv4_address, \
+    validate_ipv6_address, validate_ipv46_address
 from django.contrib.contenttypes.models import ContentType
 from django.db import models, IntegrityError, transaction
 from django.db.models import Q
 from django.db.models.fields.files import FieldFile
+from django.utils import six
+from django.utils.lorem_ipsum import paragraphs
 
-try:
-    from django.core.validators import validate_ipv6_address, validate_ipv46_address
-except ImportError:
-    validate_ipv6_address = None
-    validate_ipv46_address = None
-
-from django_any import compat
 from django_any import xunit
-from django_any.compat import paragraphs
 from django_any.functions import valid_choices, split_model_kwargs, ExtensionMethod
 
 any_field = ExtensionMethod()
@@ -309,75 +303,55 @@ def any_filepath_field(field, **kwargs):
     return result
 
 
-if compat.uuid_field_defined:
-    @any_field.register(models.UUIDField)
-    def any_uuid_field(field, **kwargs):
-        """
-        Return random value for UUIDField
-        >>> result = any_field(models.UUIDField())
-        >>> type(result)
-        <class 'uuid.UUID'>
-        """
-        import uuid
-        return uuid.uuid4()
+@any_field.register(models.UUIDField)
+def any_uuid_field(field, **kwargs):
+    """
+    Return random value for UUIDField
+    >>> result = any_field(models.UUIDField())
+    >>> type(result)
+    <class 'uuid.UUID'>
+    """
+    import uuid
+    return uuid.uuid4()
 
 
-if compat.ipaddress_field_defined:
-    @any_field.register(models.IPAddressField)
-    def any_ipaddress_field(field, **kwargs):
-        """
-        Return random value for IPAddressField
-        >>> result = any_field(models.IPAddressField())
-        >>> type(result)
-        <type 'str'>
-        >>> from django.core.validators import ipv4_re
-        >>> re.match(ipv4_re, result) is not None
-        True
-        """
-        nums = [str(xunit.any_int(min_value=0, max_value=255)) for _ in six.moves.range(0, 4)]
-        return ".".join(nums)
+@any_field.register(models.GenericIPAddressField)
+def any_genericipaddress_field(field, **kwargs):
+    """
+    Return random value for GenericIPAddressField
+    >>> ipv4_address = any_field(models.GenericIPAddressField(protocol='ipv4'))
+    >>> type(ipv4_address)
+    <type 'str'>
+    >>> from django.core.validators import URLValidator
+    >>> re.match(URLValidator.ipv4_re, ipv4_address) is not None
+    True
+    >>> ipv6_address = any_field(models.GenericIPAddressField(protocol='ipv6'))
+    >>> type(ipv6_address)
+    <type 'str'>
+    >>> from django.utils.ipv6 import is_valid_ipv6_address
+    >>> is_valid_ipv6_address(ipv6_address) is True
+    True
+    >>> ipv46_address = any_field(models.GenericIPAddressField())
+    >>> type(ipv46_address)
+    <type 'str'>
+    >>> from django.core.validators import validate_ipv46_address
+    >>> validate_ipv46_address(ipv46_address) is True
+    False
+    """
+    if field.default_validators == [validate_ipv46_address]:
+        protocol = random.choice(('ipv4', 'ipv6'))
+    elif field.default_validators == [validate_ipv4_address]:
+        protocol = 'ipv4'
+    elif field.default_validators == [validate_ipv6_address]:
+        protocol = 'ipv6'
+    else:
+        raise Exception('Unexpected validators')
 
-if validate_ipv6_address:
-    @any_field.register(models.GenericIPAddressField)
-    def any_genericipaddress_field(field, **kwargs):
-        """
-        Return random value for GenericIPAddressField
-        >>> ipv4_address = any_field(models.GenericIPAddressField(protocol='ipv4'))
-        >>> type(ipv4_address)
-        <type 'str'>
-        >>> from django.core.validators import ipv4_re
-        >>> re.match(ipv4_re, ipv4_address) is not None
-        True
-        >>> ipv6_address = any_field(models.GenericIPAddressField(protocol='ipv6'))
-        >>> type(ipv6_address)
-        <type 'str'>
-        >>> from django.utils.ipv6 import is_valid_ipv6_address
-        >>> is_valid_ipv6_address(ipv6_address) is True
-        True
-        >>> ipv46_address = any_field(models.GenericIPAddressField())
-        >>> type(ipv46_address)
-        <type 'str'>
-        >>> from django.core.validators import validate_ipv46_address
-        >>> validate_ipv46_address(ipv46_address) is True
-        False
-        """
-        if field.default_validators == [validate_ipv46_address]:
-            protocol = random.choice(('ipv4', 'ipv6'))
-        elif field.default_validators == [validate_ipv4_address]:
-            protocol = 'ipv4'
-        elif field.default_validators == [validate_ipv6_address]:
-            protocol = 'ipv6'
-        else:
-            raise Exception('Unexpected validators')
-
-        if protocol == 'ipv4':
-            if compat.ipaddress_field_defined:
-                return any_ipaddress_field(field)
-            else:
-                return any_genericipaddress_field(field)
-        if protocol == 'ipv6':
-            nums = [str(xunit.any_string(hexdigits, min_length=4, max_length=4)) for _ in six.moves.range(0, 8)]
-            return ":".join(nums)
+    if protocol == 'ipv4':
+        return any_genericipaddress_field(field)
+    if protocol == 'ipv6':
+        nums = [str(xunit.any_string(hexdigits, min_length=4, max_length=4)) for _ in six.moves.range(0, 8)]
+        return ":".join(nums)
 
 
 @any_field.register(models.NullBooleanField)
@@ -509,19 +483,19 @@ def any_time_field(field, **kwargs):
 
 @any_field.register(models.ForeignKey)
 def any_foreignkey_field(field, **kwargs):
-    return any_model(compat.get_remote_field_model(field), **kwargs)
+    return any_model(field.remote_field.model, **kwargs)
 
 
 @any_field.register(models.OneToOneField)
 def any_onetoone_field(field, **kwargs):
-    return any_model(compat.get_remote_field_model(field), **kwargs)
+    return any_model(field.remote_field.model, **kwargs)
 
 
 def _fill_model_fields(model, **kwargs):
     model_fields, fields_args = split_model_kwargs(kwargs)
 
     # fill virtual fields
-    for field in compat.get_model_private_fields(model):
+    for field in model._meta.private_fields:
         if field.name in model_fields:
             object = kwargs[field.name]
             model_fields[field.ct_field] = kwargs[field.ct_field]= ContentType.objects.get_for_model(object)
@@ -534,12 +508,12 @@ def _fill_model_fields(model, **kwargs):
                 Lookup ForeingKey field in db
                 """
                 key_field = model._meta.get_field(field.name)
-                value = compat.get_remote_field_model(key_field).objects.get(kwargs[field.name])
+                value = key_field.remote_field.model.objects.get(kwargs[field.name])
                 setattr(model, field.name, value)
             else:
                 # TODO support any_model call
                 setattr(model, field.name, kwargs[field.name])
-        elif isinstance(field, models.OneToOneField) and compat.get_remote_field(field).parent_link:
+        elif isinstance(field, models.OneToOneField) and field.remote_field.parent_link:
             """
             skip link to parent instance
             """
@@ -547,14 +521,19 @@ def _fill_model_fields(model, **kwargs):
             """
             skip primary key field
             """
-        elif isinstance(field, models.fields.related.ForeignKey) and field.model == compat.get_remote_field_model(field):
+        elif isinstance(field, models.fields.related.ForeignKey) and field.model == field.remote_field.model:
             """
             skip self relations
             """
         else:
             setattr(model, field.name, any_field(field, **fields_args[field.name]))
 
-    for field_name, field in compat.get_model_onetoone_fields(model):
+    onetoone_fields = [
+        (relation.name, relation)
+        for relation in model._meta.get_fields()
+        if relation.one_to_one and relation.auto_created
+    ]
+    for field_name, field in onetoone_fields:
         if field_name in model_fields:
             # TODO support any_model call
             setattr(model, field_name, kwargs[field_name])

@@ -2,7 +2,6 @@
 from django.db.models.fields import NOT_PROVIDED
 from django.db.models.fields.related import ForeignKey, OneToOneField
 
-from django_any import compat
 from django_any.models import any_model
 
 
@@ -16,7 +15,7 @@ def any_model_with_defaults(cls, **attrs):
                 # for stuff like default=datetime.now
                 default = default()
             if isinstance(field, (ForeignKey, OneToOneField)):
-                Model = compat.get_remote_field_model(field)
+                Model = field.remote_field.model
                 if not isinstance(default, Model):
                     try:
                         default = Model.objects.get(pk=default)

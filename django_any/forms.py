@@ -9,21 +9,14 @@ import random
 from datetime import date, datetime, time
 from string import hexdigits
 
-import six
 from django import forms
-from django.core.validators import validate_ipv4_address
-from django.utils import formats
+from django.core.validators import validate_ipv4_address, \
+    validate_ipv6_address, validate_ipv46_address
+from django.utils import formats, six
 
-from django_any import compat
 from django_any import xunit
 from django_any.functions import valid_choices, split_model_kwargs, \
     ExtensionMethod
-
-try:
-    from django.core.validators import validate_ipv6_address, validate_ipv46_address
-except ImportError:
-    validate_ipv6_address = None
-    validate_ipv46_address = None
 
 any_form = ExtensionMethod()
 any_form_field = ExtensionMethod()
@@ -253,67 +246,45 @@ def integer_field_data(field, **kwargs):
     return str(xunit.any_int(min_value=min_value, max_value=max_value))
 
 
-if compat.ipaddress_field_defined:
-    @any_form_field.register(forms.IPAddressField)
-    def ipaddress_field_data(field, **kwargs):
-        """
-        Return random value for IPAddressField
+@any_form_field.register(forms.GenericIPAddressField)
+def generic_ipaddress_field_data(field, **kwargs):
+    """
+    Return random value for GenericIPAddressField
 
-        >>> result = any_form_field(forms.IPAddressField())
-        >>> type(result)
-        <type 'str'>
-        >>> from django.core.validators import ipv4_re
-        >>> import re
-        >>> re.match(ipv4_re, result) is not None
-        True
-        """
-        choices = kwargs.get('choices')
-        if choices:
-            return random.choice(choices)
-        else:
-            nums = [str(xunit.any_int(min_value=0, max_value=255)) for _ in range(0, 4)]
-            return ".".join(nums)
+    >>> ipv4_address = any_form_field(forms.GenericIPAddressField(protocol='ipv4'))
+    >>> type(ipv4_address)
+    <type 'str'>
+    >>> from django.core.validators import URLValidator
+    >>> import re
+    >>> re.match(URLValidator.ipv4_re, ipv4_address) is not None
+    True
+    >>> ipv6_address = any_form_field(forms.GenericIPAddressField(protocol='ipv6'))
+    >>> type(ipv6_address)
+    <type 'str'>
+    >>> from django.utils.ipv6 import is_valid_ipv6_address
+    >>> is_valid_ipv6_address(ipv6_address) is True
+    True
+    >>> ipv46_address = any_form_field(forms.GenericIPAddressField())
+    >>> type(ipv46_address)
+    <type 'str'>
+    >>> from django.core.validators import validate_ipv46_address
+    >>> validate_ipv46_address(ipv46_address) is True
+    False
+    """
+    if field.default_validators == [validate_ipv46_address]:
+        protocol = random.choice(('ipv4', 'ipv6'))
+    elif field.default_validators == [validate_ipv4_address]:
+        protocol = 'ipv4'
+    elif field.default_validators == [validate_ipv6_address]:
+        protocol = 'ipv6'
+    else:
+        raise Exception('Unexpected validators')
 
-if validate_ipv6_address:
-    @any_form_field.register(forms.GenericIPAddressField)
-    def generic_ipaddress_field_data(field, **kwargs):
-        """
-        Return random value for GenericIPAddressField
-
-        >>> ipv4_address = any_form_field(forms.GenericIPAddressField(protocol='ipv4'))
-        >>> type(ipv4_address)
-        <type 'str'>
-        >>> from django.core.validators import ipv4_re
-        >>> import re
-        >>> re.match(ipv4_re, ipv4_address) is not None
-        True
-        >>> ipv6_address = any_form_field(forms.GenericIPAddressField(protocol='ipv6'))
-        >>> type(ipv6_address)
-        <type 'str'>
-        >>> from django.utils.ipv6 import is_valid_ipv6_address
-        >>> is_valid_ipv6_address(ipv6_address) is True
-        True
-        >>> ipv46_address = any_form_field(forms.GenericIPAddressField())
-        >>> type(ipv46_address)
-        <type 'str'>
-        >>> from django.core.validators import validate_ipv46_address
-        >>> validate_ipv46_address(ipv46_address) is True
-        False
-        """
-        if field.default_validators == [validate_ipv46_address]:
-            protocol = random.choice(('ipv4', 'ipv6'))
-        elif field.default_validators == [validate_ipv4_address]:
-            protocol = 'ipv4'
-        elif field.default_validators == [validate_ipv6_address]:
-            protocol = 'ipv6'
-        else:
-            raise Exception('Unexpected validators')
-
-        if protocol == 'ipv4':
-            return ipaddress_field_data(field)
-        if protocol == 'ipv6':
-            nums = [str(xunit.any_string(hexdigits, min_length=4, max_length=4)) for _ in six.moves.range(0, 8)]
-            return ":".join(nums)
+    if protocol == 'ipv4':
+        return generic_ipaddress_field_data(field)
+    if protocol == 'ipv6':
+        nums = [str(xunit.any_string(hexdigits, min_length=4, max_length=4)) for _ in six.moves.range(0, 8)]
+        return ":".join(nums)
 
 
 @any_form_field.register(forms.NullBooleanField)
