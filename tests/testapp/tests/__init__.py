@@ -19,7 +19,7 @@ def suite():
         if filename.endswith('__init__.py'):
             continue
 
-        module_name = 'django_any.tests.%s' % \
+        module_name = 'testapp.tests.%s' % \
                       os.path.splitext(os.path.basename(filename))[0]
         __import__(module_name)
 

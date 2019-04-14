@@ -2,23 +2,11 @@
 """
 Allow partial specifications with q objects
 """
-from django.db import models
 from django.db.models import Q
 from django.test import TestCase
 from django_any.models import any_model
+from testapp.models import QObjectRelated, RelatedToQObject
 
-
-class QObjectRelated(models.Model):
-    class Meta:
-        app_label = 'django_any'
-
-
-class RelatedToQObject(models.Model):
-    related = models.ForeignKey(QObjectRelated, on_delete=models.CASCADE)
-
-    class Meta:
-        app_label = 'django_any'
-    
 
 class QObjectsSupport(TestCase):
     def setUp(self):

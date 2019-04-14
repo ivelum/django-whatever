@@ -2,31 +2,9 @@
 """
 Auto-create foreingkey referencies
 """
-from django.db import models
 from django.test import TestCase
 from django_any.models import any_model
-
-
-class RelatedModel(models.Model):
-    name = models.CharField(max_length=5)
-
-    class Meta:
-        app_label = 'django_any'
-
-
-class BaseModel(models.Model):
-    related = models.ForeignKey(RelatedModel, on_delete=models.CASCADE)
-
-    class Meta:
-        app_label = 'django_any'
-
-
-class SelfReferencingModel(models.Model):
-    name = models.CharField(max_length=5)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
-
-    class Meta:
-        app_label = 'django_any'
+from testapp.models import RelatedModel, BaseModel, SelfReferencingModel
 
 
 class ForeignKeyCreation(TestCase):

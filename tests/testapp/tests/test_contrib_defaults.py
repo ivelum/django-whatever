@@ -2,47 +2,12 @@
 import datetime
 from decimal import Decimal
 
-from django.db import models
 from django.test import TestCase
 from django.db.models.fields import NOT_PROVIDED
 
 from django_any.contrib.default import any_model_with_defaults
-
-
-class SimpleModelWithDefaults(models.Model):
-    big_integer_field = models.BigIntegerField(default=8223372036854775807)
-    char_field = models.CharField(max_length=5, default='USSR')
-    boolean_field = models.BooleanField(default=True)
-    date_field = models.DateField(default=datetime.date(2010, 12, 10))
-    datetime_field = models.DateTimeField(datetime.datetime.now)
-    decimal_field = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0.5'))
-    email_field = models.EmailField(default='admin@dev.null')
-    float_field = models.FloatField(default=0.7)
-    integer_field = models.IntegerField(default=42)
-    ip_field = models.GenericIPAddressField(default='127.0.0.1')
-    null_boolead_field = models.NullBooleanField(default=None)
-    positive_integer_field = models.PositiveIntegerField(default=4)
-    small_integer = models.PositiveSmallIntegerField(default=1)
-    slug_field = models.SlugField(default='any_model_default')
-    text_field = models.TextField(default='Lorem ipsum')
-    time_field = models.TimeField(default=datetime.time(hour=11, minute=14))
-    url_field = models.URLField(default='http://yandex.ru')
-
-    class Meta:
-        app_label = 'django_any'
-
-
-class TargetModel(models.Model):
-    class Meta:
-        app_label = 'django_any'
-
-
-class RelationshipModelsWithDefaults(models.Model):
-    fk = models.ForeignKey(TargetModel, on_delete=models.CASCADE, default=1, related_name='related_fk')
-    o2o = models.OneToOneField(TargetModel, on_delete=models.CASCADE, default=1, related_name='related_o2o')
-
-    class Meta:
-        app_label = 'django_any'
+from testapp.models import SimpleModelWithDefaults, TargetModel, \
+    RelationshipModelsWithDefaults
 
 
 class AnyModelWithDefaults(TestCase):
@@ -70,7 +35,8 @@ class AnyModelWithDefaults(TestCase):
         result = any_model_with_defaults(SimpleModelWithDefaults)
 
         self.assertEqual(type(result), SimpleModelWithDefaults)
-        self.assertEqual(len(result._meta.fields), len(SimpleModelWithDefaults._meta.local_fields))
+        self.assertEqual(len(result._meta.fields), len(
+            SimpleModelWithDefaults._meta.local_fields))
 
         for field, original_field in zip(result._meta.fields, SimpleModelWithDefaults._meta.local_fields):
             value = getattr(result, field.name)

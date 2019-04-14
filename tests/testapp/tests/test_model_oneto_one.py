@@ -2,24 +2,9 @@
 """
 Shortcuts for onetoone model fields
 """
-from django.db import models
 from django.test import TestCase
 from django_any.models import any_model
-
-
-class OneToOneRelated(models.Model):
-    name = models.CharField(max_length=5)
-
-    class Meta:
-        app_label = 'django_any'
-
-
-class ModelWithOneToOneField(models.Model):
-    name = models.CharField(max_length=5)
-    related = models.OneToOneField(OneToOneRelated, on_delete=models.CASCADE)
-
-    class Meta:
-        app_label = 'django_any'
+from testapp.models import OneToOneRelated, ModelWithOneToOneField
 
 
 class OneToOneCreation(TestCase):

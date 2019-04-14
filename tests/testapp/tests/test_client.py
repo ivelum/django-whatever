@@ -38,7 +38,7 @@ urlpatterns = [
 ]
 
 
-@override_settings(ROOT_URLCONF='django_any.tests.test_client')
+@override_settings(ROOT_URLCONF='testapp.tests.test_client')
 class DjangoAnyClient(TestCase):
     def setUp(self):
         self.client = Client()

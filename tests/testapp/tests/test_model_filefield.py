@@ -2,27 +2,9 @@
 """
 Test model creation with FileField
 """
-import os
-from django.db import models
 from django.test import TestCase
 from django_any.models import any_model
-
-class ModelUploadToString(models.Model):
-    file_field = models.FileField(upload_to='sample_subdir')
-
-    class Meta:
-        app_label = 'django_any'
-
-
-def callable_upload_to(instance, filename):
-    return os.path.join('sample_subdir', filename)
-
-
-class ModelUploadToCallable(models.Model):
-    file_field = models.FileField(upload_to=callable_upload_to)
-
-    class Meta:
-        app_label = 'django_any'
+from testapp.models import ModelUploadToString, ModelUploadToCallable
 
 
 class FileFiledUploadTo(TestCase):

@@ -1,21 +1,7 @@
 # -*- coding: utf-8; mode: django -*-
-from django.db import models
 from django.test import TestCase
 from django_any.models import any_model
-
-
-class Redefined(models.Model):
-    name = models.CharField(max_length=5)
-
-    class Meta:
-        app_label = 'django_any'
-
-
-class RelatedToRedefined(models.Model):
-    related = models.ForeignKey(Redefined, on_delete=models.CASCADE)
-
-    class Meta:
-        app_label = 'django_any'
+from testapp.models import Redefined, RelatedToRedefined
 
 
 @any_model.register(Redefined)
