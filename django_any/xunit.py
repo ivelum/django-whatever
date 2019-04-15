@@ -155,9 +155,10 @@ def any_decimal(min_value=Decimal(0), max_value=Decimal('99.99'), decimal_places
     >>> result >= Decimal('0.999') and result <= Decimal(3)
     True
     """
-    return Decimal(str(any_float(min_value=float(min_value),
-                                 max_value=float(max_value),
-                                 precision=decimal_places)))
+    tpl = '{{:.{}f}}'.format(decimal_places)
+    return Decimal(tpl.format(any_float(min_value=float(min_value),
+                                        max_value=float(max_value),
+                                        precision=decimal_places)))
 
 
 def any_email():
