@@ -27,6 +27,6 @@ matrix:
 install:
   - export PYTHONPATH=./django_any/:$PYTHONPATH
   - pip install -U $DJANGO
-  - pip install -r tests/requirements.pip
+  - pip install -r tests/requirements.txt
 script:
   - python tests/manage.py test django_any
