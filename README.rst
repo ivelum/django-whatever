@@ -1,6 +1,6 @@
 Unobtrusive test models creation for django
 
-**This package is no longer maintained. If you would like to take over, contact me pls.**
+**Current development of the package happens in https://github.com/ivelum/django-whatever.**
 
 django-whatever is a friendly fork of ``django-any`` package written by Mikhail Podgurskiy (kmmbvnr)
 The purpose of the fork is to fix most annoying bugs and add `some features <http://django-whatever.readthedocs.org/en/latest/changelog.html>`_
