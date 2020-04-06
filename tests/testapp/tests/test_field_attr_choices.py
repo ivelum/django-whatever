@@ -1,8 +1,9 @@
 """
 https://docs.djangoproject.com/en/1.3/ref/models/fields/#choices
 """
-from django.test import TestCase
 from django.db import models
+from django.test import TestCase
+
 from django_any.models import any_field
 
 

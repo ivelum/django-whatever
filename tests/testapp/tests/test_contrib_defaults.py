@@ -1,12 +1,11 @@
 import datetime
 from decimal import Decimal
 
-from django.test import TestCase
 from django.db.models.fields import NOT_PROVIDED
+from django.test import TestCase
 
 from django_any.contrib.default import any_model_with_defaults
-from testapp.models import SimpleModelWithDefaults, TargetModel, \
-    RelationshipModelsWithDefaults
+from testapp.models import RelationshipModelsWithDefaults, SimpleModelWithDefaults, TargetModel
 
 
 class AnyModelWithDefaults(TestCase):

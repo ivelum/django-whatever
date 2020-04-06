@@ -3,6 +3,7 @@ Allow partial specifications with q objects
 """
 from django.db.models import Q
 from django.test import TestCase
+
 from django_any.models import any_model
 from testapp.models import QObjectRelated, RelatedToQObject
 

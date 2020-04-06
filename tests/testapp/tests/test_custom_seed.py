@@ -1,9 +1,9 @@
 # flake8: noqa
 from django.db import models
 from django.test import TestCase
+
 from django_any.models import any_field
 from django_any.test import WithTestDataSeed, with_seed, without_random_seed
-
 
 # Skip until #4 is fixed
 

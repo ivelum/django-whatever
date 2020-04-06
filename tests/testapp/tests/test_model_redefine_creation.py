@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from django_any.models import any_model
 from testapp.models import Redefined, RelatedToRedefined
 

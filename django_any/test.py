@@ -1,18 +1,19 @@
 import random
 import time
 
+from django import forms
+from django.contrib.admin.helpers import AdminForm
+from django.test.client import Client as DjangoClient
+from django.utils import six
+
+from django_any import any_form, xunit
+from django_any.contrib.auth import any_user
+
 try:
     from unittest import _strclass
 except ImportError:
     _strclass = str
 
-from django import forms
-from django.utils import six
-from django_any import any_form
-from django.test.client import Client as DjangoClient
-from django_any.contrib.auth import any_user
-from django.contrib.admin.helpers import AdminForm
-from django_any import xunit
 
 
 def _context_keys_iterator(context):

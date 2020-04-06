@@ -2,8 +2,9 @@
 Auto-create foreingkey referencies
 """
 from django.test import TestCase
+
 from django_any.models import any_model
-from testapp.models import RelatedModel, BaseModel, SelfReferencingModel
+from testapp.models import BaseModel, RelatedModel, SelfReferencingModel
 
 
 class ForeignKeyCreation(TestCase):

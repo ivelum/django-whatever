@@ -3,8 +3,9 @@ Test model creation with GenericForeignKey
 """
 from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
+
 from django_any.models import any_model
-from testapp.models import RelatedContentModel, ModelWithGenericRelation
+from testapp.models import ModelWithGenericRelation, RelatedContentModel
 
 
 class ContentTypeTest(TestCase):

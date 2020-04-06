@@ -2,8 +2,9 @@
 Shortcuts for onetoone model fields
 """
 from django.test import TestCase
+
 from django_any.models import any_model
-from testapp.models import OneToOneRelated, ModelWithOneToOneField
+from testapp.models import ModelWithOneToOneField, OneToOneRelated
 
 
 class OneToOneCreation(TestCase):

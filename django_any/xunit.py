@@ -3,9 +3,9 @@ The python basic types generators
 """
 
 import random
-from string import ascii_letters
 from datetime import date, datetime, timedelta
 from decimal import Decimal
+from string import ascii_letters
 
 
 def weighted_choice(choices):

@@ -3,9 +3,9 @@ Models that have custom validation checks
 """
 from django.db import models
 from django.test import TestCase
+
 from django_any.models import any_model
-from testapp.models import ModelWithConstraint, \
-    ModelWithConstraintOnForeignKey
+from testapp.models import ModelWithConstraint, ModelWithConstraintOnForeignKey
 
 
 class PassModelValidation(TestCase):

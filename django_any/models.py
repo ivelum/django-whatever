@@ -2,27 +2,27 @@
 Values generators for common Django Fields
 """
 from __future__ import division
+
+import os
 import random
 import re
-import os
-from decimal import Decimal
 from datetime import date, datetime, time
+from decimal import Decimal
 from string import ascii_letters, digits, hexdigits
 
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.core import validators
 from django.core.exceptions import ValidationError
-from django.core.validators import validate_ipv4_address, \
-    validate_ipv6_address, validate_ipv46_address
-from django.contrib.contenttypes.models import ContentType
-from django.db import models, IntegrityError, transaction
+from django.core.validators import validate_ipv4_address, validate_ipv6_address, validate_ipv46_address
+from django.db import IntegrityError, models, transaction
 from django.db.models import Q
 from django.db.models.fields.files import FieldFile
 from django.utils import six
 from django.utils.lorem_ipsum import paragraphs
 
 from django_any import xunit
-from django_any.functions import valid_choices, split_model_kwargs, ExtensionMethod
+from django_any.functions import ExtensionMethod, split_model_kwargs, valid_choices
 
 any_field = ExtensionMethod()
 any_model = ExtensionMethod(by_instance=True)

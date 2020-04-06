@@ -1,9 +1,8 @@
+import doctest
 import os
 import sys
-import doctest
 from glob import glob
 from unittest import TestSuite, defaultTestLoader
-
 
 TESTS_ROOT = os.path.abspath(os.path.dirname(__file__))
 

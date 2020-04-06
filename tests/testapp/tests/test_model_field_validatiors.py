@@ -2,6 +2,7 @@
 Test model creation with custom field validation
 """
 from django.test import TestCase
+
 from django_any.models import any_model
 from testapp.models import ModelWithValidatedField, validate_even
 

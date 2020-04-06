@@ -1,4 +1,5 @@
-from django.contrib.auth.models import User, Permission, Group
+from django.contrib.auth.models import Group, Permission, User
+
 from django_any.models import any_model
 
 

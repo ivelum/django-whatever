@@ -3,18 +3,17 @@ Django forms data generators
 
 """
 from __future__ import division
+
 import random
 from datetime import date, datetime, time
 from string import hexdigits
 
 from django import forms
-from django.core.validators import validate_ipv4_address, \
-    validate_ipv6_address, validate_ipv46_address
+from django.core.validators import validate_ipv4_address, validate_ipv6_address, validate_ipv46_address
 from django.utils import formats, six
 
 from django_any import xunit
-from django_any.functions import valid_choices, split_model_kwargs, \
-    ExtensionMethod
+from django_any.functions import ExtensionMethod, split_model_kwargs, valid_choices
 
 any_form = ExtensionMethod()
 any_form_field = ExtensionMethod()

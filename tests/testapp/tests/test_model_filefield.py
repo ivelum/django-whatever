@@ -2,8 +2,9 @@
 Test model creation with FileField
 """
 from django.test import TestCase
+
 from django_any.models import any_model
-from testapp.models import ModelUploadToString, ModelUploadToCallable
+from testapp.models import ModelUploadToCallable, ModelUploadToString
 
 
 class FileFiledUploadTo(TestCase):
