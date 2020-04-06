@@ -10,7 +10,7 @@ from string import hexdigits
 
 from django import forms
 from django.core.validators import validate_ipv4_address, validate_ipv6_address, validate_ipv46_address
-from django.utils import formats, six
+from django.utils import formats
 
 from django_any import xunit
 from django_any.functions import ExtensionMethod, split_model_kwargs, valid_choices
@@ -29,7 +29,7 @@ def any_form_default(form_cls, **kwargs):
 
     form_fields, fields_args = split_model_kwargs(kwargs)
 
-    for name, field in six.iteritems(form_cls.base_fields):
+    for name, field in form_cls.base_fields.items():
         if name in form_fields:
             form_data[name] = kwargs[name]
         else:
@@ -280,7 +280,7 @@ def generic_ipaddress_field_data(field, **kwargs):
     if protocol == 'ipv4':
         return generic_ipaddress_field_data(field)
     if protocol == 'ipv6':
-        nums = [str(xunit.any_string(hexdigits, min_length=4, max_length=4)) for _ in six.moves.range(0, 8)]
+        nums = [str(xunit.any_string(hexdigits, min_length=4, max_length=4)) for _ in range(0, 8)]
         return ":".join(nums)
 
 
@@ -396,7 +396,7 @@ def multiple_choice_field_data(field, **kwargs):
         random.shuffle(valid_choices_list)
         choices = []
         count = xunit.any_int(min_value=1, max_value=len(field.choices))
-        for i in six.moves.range(0, count):
+        for i in range(0, count):
             choices.append(valid_choices_list[i])
         return ' '.join(choices)
     return 'None'

@@ -2,7 +2,6 @@
 Test model creation with custom fields
 """
 from django.test import TestCase
-from django.utils import six
 
 from django_any.models import any_model
 from testapp.models import ModelWithCustomField
@@ -18,4 +17,4 @@ class CustomFieldsTest(TestCase):
             ModelWithCustomField._meta.local_fields))
 
         self.assertTrue(model.slug)
-        self.assertTrue(isinstance(model.slug, six.string_types))
+        self.assertTrue(isinstance(model.slug, str))

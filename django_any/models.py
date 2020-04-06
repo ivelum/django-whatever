@@ -18,7 +18,6 @@ from django.core.validators import validate_ipv4_address, validate_ipv6_address,
 from django.db import IntegrityError, models, transaction
 from django.db.models import Q
 from django.db.models.fields.files import FieldFile
-from django.utils import six
 from django.utils.lorem_ipsum import paragraphs
 
 from django_any import xunit
@@ -76,15 +75,11 @@ def any_biginteger_field(field, **kwargs):
 
     >>> result = any_field(models.BigIntegerField())
     >>> type(result)
-    <type 'long'>
+    <type 'int'>
     """
     min_value = kwargs.get('min_value', 1)
     max_value = kwargs.get('max_value', 10**10)
-    if six.PY3:
-        long_type = int
-    else:
-        long_type = long  # noqa
-    return long_type(xunit.any_int(min_value=min_value, max_value=max_value))
+    return int(xunit.any_int(min_value=min_value, max_value=max_value))
 
 
 @any_field.register(models.BooleanField)
@@ -144,7 +139,7 @@ def any_commaseparatedinteger_field(field, **kwargs):
     'OK'
     """
     nums_count = field.max_length // 2
-    nums = [str(xunit.any_int(min_value=0, max_value=9)) for _ in six.moves.range(0, nums_count)]
+    nums = [str(xunit.any_int(min_value=0, max_value=9)) for _ in range(0, nums_count)]
     return ",".join(nums)
 
 
@@ -349,7 +344,7 @@ def any_genericipaddress_field(field, **kwargs):
     if protocol == 'ipv4':
         return any_genericipaddress_field(field)
     if protocol == 'ipv6':
-        nums = [str(xunit.any_string(hexdigits, min_length=4, max_length=4)) for _ in six.moves.range(0, 8)]
+        nums = [str(xunit.any_string(hexdigits, min_length=4, max_length=4)) for _ in range(0, 8)]
         return ":".join(nums)
 
 
