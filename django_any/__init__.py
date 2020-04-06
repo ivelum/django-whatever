@@ -1,4 +1,4 @@
-__version__ = (0, 2, 4, 'final', 0)
+__version__ = (0, 3, 0, 'final', 0)
 
 try:
     from django_any.forms import any_form_field, any_form  # noqa: F401

@@ -3,8 +3,8 @@
 Changelog
 =========
 
-dev
-~~~
+0.3.0
+~~~~~
 
 * dropped Django 1.1, 2.0, 2.2 and Python 2.7, 3.4 support
 * added Django 3.0 and Python 3.8 suport
