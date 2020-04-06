@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from django.db.models.fields import NOT_PROVIDED
 from django.db.models.fields.related import ForeignKey, OneToOneField
 

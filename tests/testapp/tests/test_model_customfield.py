@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Test model creation with custom fields
 """

@@ -1,25 +1,25 @@
-# -*- coding: utf-8 -*-
 from django.contrib.auth.models import User, Permission, Group
 from django_any.models import any_model
 
-def any_user(password=None, permissions=[], groups=[], **kwargs):
+
+def any_user(password=None, permissions=None, groups=None, **kwargs):
     """
     Shortcut for creating Users
 
     Permissions could be a list of permission names
 
-    If not specified, creates active, non superuser
-    and non staff user
+    If not specified, creates active, non superuser and non staff user
     """
-
+    permissions = permissions or []
+    groups = groups or []
     is_active = kwargs.pop('is_active', True)
     is_superuser = kwargs.pop('is_superuser', False)
     is_staff = kwargs.pop('is_staff', False)
 
-    user = any_model(User, is_active = is_active, is_superuser = is_superuser,
-                     is_staff = is_staff, **kwargs)
+    user = any_model(User, is_active=is_active, is_superuser=is_superuser,
+                     is_staff=is_staff, **kwargs)
 
-    for group_name in groups :
+    for group_name in groups:
         group = Group.objects.get(name=group_name)
         user.groups.add(group)
 

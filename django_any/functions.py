@@ -1,7 +1,7 @@
-#-*- coding: utf-8 -*-
 """
 Additional functions for django-any
 """
+
 
 def valid_choices(choices):
     """
@@ -22,7 +22,7 @@ def split_model_kwargs(kw):
     from collections import defaultdict
 
     model_fields = {}
-    fields_agrs = defaultdict(lambda : {})
+    fields_agrs = defaultdict(lambda: {})
 
     for key in kw.keys():
         if '__' in key:
@@ -97,4 +97,3 @@ class ExtensionMethod(object):
 
     def __call__(self, *args, **kwargs):
         return self._create_value(*args, **kwargs)
-

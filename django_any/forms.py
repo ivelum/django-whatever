@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# pylint: disable=W0613, C0103
 """
 Django forms data generators
 
@@ -38,7 +36,7 @@ def any_form_default(form_cls, **kwargs):
         else:
             try:
                 form_field_data = any_form_field(field, **fields_args[name])
-            except Exception as e:
+            except Exception:
                 if field.required:
                     raise
             else:
@@ -99,8 +97,8 @@ def char_field_data(field, **kwargs):
     <type 'str'>
     """
     min_length = kwargs.get('min_length', 1)
-    max_length = kwargs.get('max_length', field.max_length or 255)    
-    return xunit.any_string(min_length=field.min_length or min_length, 
+    max_length = kwargs.get('max_length', field.max_length or 255)
+    return xunit.any_string(min_length=field.min_length or min_length,
                             max_length=field.max_length or max_length)
 
 
@@ -118,7 +116,7 @@ def decimal_field_data(field, **kwargs):
     """
     min_value = 0
     max_value = 10
-    from django.core.validators import MinValueValidator, MaxValueValidator 
+    from django.core.validators import MinValueValidator, MaxValueValidator
     for elem in field.validators:
         if isinstance(elem, MinValueValidator):
             min_value = elem.limit_value
@@ -127,15 +125,15 @@ def decimal_field_data(field, **kwargs):
     if (field.max_digits and field.decimal_places):
         from decimal import Decimal
         max_value = min(max_value,
-                        Decimal('%s.%s' % ('9'*(field.max_digits-field.decimal_places),
-                                           '9'*field.decimal_places)))
+                        Decimal('%s.%s' % ('9' * (field.max_digits - field.decimal_places),
+                                           '9' * field.decimal_places)))
 
     min_value = kwargs.get('min_value') or min_value
     max_value = kwargs.get('max_value') or max_value
 
     return str(xunit.any_decimal(min_value=min_value,
-                             max_value=max_value,
-                             decimal_places = field.decimal_places or 2))
+                                 max_value=max_value,
+                                 decimal_places=field.decimal_places or 2))
 
 
 @any_form_field.register(forms.EmailField)
@@ -172,9 +170,9 @@ def date_field_data(field, **kwargs):
     """
     from_date = kwargs.get('from_date', date(1990, 1, 1))
     to_date = kwargs.get('to_date', date.today())
-    
+
     date_format = random.choice(field.input_formats or formats.get_format('DATE_INPUT_FORMATS'))
-                                
+
     return xunit.any_date(from_date=from_date, to_date=to_date).strftime(date_format)
 
 
@@ -233,7 +231,7 @@ def integer_field_data(field, **kwargs):
     """
     min_value = 0
     max_value = 100
-    from django.core.validators import MinValueValidator, MaxValueValidator 
+    from django.core.validators import MinValueValidator, MaxValueValidator
     for elem in field.validators:
         if isinstance(elem, MinValueValidator):
             min_value = elem.limit_value
@@ -291,7 +289,7 @@ def generic_ipaddress_field_data(field, **kwargs):
 def null_boolean_field_data(field, **kwargs):
     """
     Return random value for NullBooleanField
-    
+
     >>> result = any_form_field(forms.NullBooleanField())
     >>> type(result)
     <type 'unicode'>
@@ -305,7 +303,7 @@ def null_boolean_field_data(field, **kwargs):
 def slug_field_data(field, **kwargs):
     """
     Return random value for SlugField
-    
+
     >>> result = any_form_field(forms.SlugField())
     >>> type(result)
     <type 'str'>
@@ -316,17 +314,17 @@ def slug_field_data(field, **kwargs):
     """
     min_length = kwargs.get('min_length', 1)
     max_length = kwargs.get('max_length', field.max_length or 20)
-    
+
     from string import ascii_letters, digits
-    letters = ascii_letters + digits + '_-' 
-    return xunit.any_string(letters = letters, min_length = min_length, max_length = max_length)
+    letters = ascii_letters + digits + '_-'
+    return xunit.any_string(letters=letters, min_length=min_length, max_length=max_length)
 
 
 @any_form_field.register(forms.URLField)
 def url_field_data(field, **kwargs):
     """
     Return random value for URLField
-    
+
     >>> result = any_form_field(forms.URLField())
     >>> from django.core.validators import URLValidator
     >>> import re
@@ -339,7 +337,7 @@ def url_field_data(field, **kwargs):
                        'http://www.microsoft.com/en/us/default.aspx',
                        'http://habrahabr.ru/company/opera/',
                        'http://www.apple.com/support/hardware/',
-                                        'http://localhost/',
+                       'http://localhost/',
                        'http://72.14.221.99',
                        'http://fr.wikipedia.org/wiki/France'])
 
@@ -394,13 +392,13 @@ def multiple_choice_field_data(field, **kwargs):
     <type 'str'>
     """
     if field.choices:
-        from django_any.functions import valid_choices 
-        l = list(valid_choices(field.choices))
-        random.shuffle(l)
+        from django_any.functions import valid_choices
+        valid_choices_list = list(valid_choices(field.choices))
+        random.shuffle(valid_choices_list)
         choices = []
         count = xunit.any_int(min_value=1, max_value=len(field.choices))
         for i in six.moves.range(0, count):
-            choices.append(l[i])
+            choices.append(valid_choices_list[i])
         return ' '.join(choices)
     return 'None'
 
@@ -415,4 +413,3 @@ def model_choice_field_data(field, **kwargs):
         return random.choice(data)
     else:
         raise TypeError('No %s available in queryset' % field.queryset.model)
-

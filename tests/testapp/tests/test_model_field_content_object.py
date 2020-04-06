@@ -1,4 +1,3 @@
-# -*- coding: utf-8; mode: django -*-
 """
 Test model creation with GenericForeignKey
 """
@@ -28,4 +27,3 @@ class ContentTypeTest(TestCase):
         self.assertEqual(related_object.content_type, ContentType.objects.get_for_model(
             RelatedContentModel))
         self.assertEqual(related_object.object_id, content_object.id)
-

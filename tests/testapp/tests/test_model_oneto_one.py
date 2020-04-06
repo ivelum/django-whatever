@@ -1,4 +1,3 @@
-# -*- coding: utf-8; mode: django -*-
 """
 Shortcuts for onetoone model fields
 """
@@ -19,7 +18,7 @@ class OneToOneCreation(TestCase):
     def test_related_onetoone_not_created_by_default(self):
         simple_model = any_model(OneToOneRelated)
         self.assertRaises(ModelWithOneToOneField.DoesNotExist,
-                          lambda : simple_model.modelwithonetoonefield)
+                          lambda: simple_model.modelwithonetoonefield)
 
     def test_related_specification_succeed(self):
         related = any_model(OneToOneRelated)
@@ -34,4 +33,3 @@ class OneToOneCreation(TestCase):
     def _test_reverse_relation_spec_succeed(self):
         related = any_model(OneToOneRelated, modelwithonetoonefield__name='test')
         self.assertEqual(related.modelwithonetoonefield.name, 'test')
-

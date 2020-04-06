@@ -1,4 +1,3 @@
-# -*- coding: utf-8; mode: django -*-
 """
 Auto-create foreingkey referencies
 """

@@ -1,4 +1,3 @@
-# -*- coding: utf-8; mode: django -*-
 """
 Test model creation with FileField
 """
@@ -16,4 +15,3 @@ class FileFiledUploadTo(TestCase):
     def test_created_model_with_filefield_callable_upload_to(self):
         model = any_model(ModelUploadToCallable)
         self.assertEqual(model.file_field, 'sample_file.txt')
-

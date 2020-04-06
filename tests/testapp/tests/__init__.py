@@ -1,4 +1,3 @@
-# -*- coding: utf-8; mode: django -*-
 import os
 import sys
 import doctest
@@ -27,4 +26,3 @@ def suite():
             defaultTestLoader.loadTestsFromModule(sys.modules[module_name]))
 
     return result
-

@@ -1,4 +1,3 @@
-# -*- coding: utf-8; mode: django -*-
 """
 Test model creation with custom field validation
 """

@@ -1,5 +1,3 @@
-# -*- coding: utf-8; mode: django -*-
-import django
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth.models import User
@@ -32,9 +30,10 @@ def view(request):
 
     return HttpResponse(template.render(context))
 
+
 urlpatterns = [
-     url(r'^admin/', admin.site.urls),
-     url(r'^view/', view),
+    url(r'^admin/', admin.site.urls),
+    url(r'^view/', view),
 ]
 
 

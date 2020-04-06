@@ -1,4 +1,3 @@
-# -*- coding: utf-8; mode: django -*-
 """
 Models that have custom validation checks
 """
@@ -15,6 +14,10 @@ class PassModelValidation(TestCase):
         self.assertTrue(result.start_time <= result.end_time)
 
     def test_foreignkey_constraint_succeed(self):
-        result = any_model(ModelWithConstraintOnForeignKey, on_delete=models.CASCADE)
-        self.assertTrue(result.timestamp.start_time <= result.timestamp.end_time)
-
+        result = any_model(
+            ModelWithConstraintOnForeignKey,
+            on_delete=models.CASCADE,
+        )
+        self.assertTrue(
+            result.timestamp.start_time <= result.timestamp.end_time,
+        )

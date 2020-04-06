@@ -145,6 +145,7 @@ class ModelWithOneToOneField(models.Model):
 class QObjectRelated(models.Model):
     pass
 
+
 class RelatedToQObject(models.Model):
     related = models.ForeignKey(QObjectRelated, on_delete=models.CASCADE)
 

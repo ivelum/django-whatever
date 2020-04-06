@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import random
 import time
 
@@ -33,7 +32,7 @@ def _request_context_forms(context):
         inst = context[key]
         if isinstance(inst, (forms.Form, forms.ModelForm)):
             yield inst
-        elif isinstance(inst,  forms.formsets.BaseFormSet):
+        elif isinstance(inst, forms.formsets.BaseFormSet):
             yield inst
         elif isinstance(inst, AdminForm):
             yield inst.form
@@ -71,12 +70,12 @@ class Client(DjangoClient):
 
         # generate data
         for form in forms_list:
-            if isinstance(form, forms.formsets.BaseFormSet): # TODO any_form ExtensionMethod
-                #TODO support formset data
+            if isinstance(form, forms.formsets.BaseFormSet):  # TODO any_form ExtensionMethod
+                # TODO support formset data
                 form_data = form.management_form.initial
                 form_data['MAX_NUM_FORMS'] = 0
             else:
-                form_data, form_files = any_form(form.__class__, **kwargs) #TODO support form instance
+                form_data, form_files = any_form(form.__class__, **kwargs)  # TODO support form instance
 
             if form.prefix:
                 form_data = dict([('%s-%s' % (form.prefix, key), value) for key, value in form_data.items()])
@@ -115,7 +114,7 @@ def set_seed(func, seed=None):
     not provided current timestamp used
     """
     def _wrapper(self, seed=seed, *args, **kwargs):
-        self.__django_any_seed = seed if seed else int(time.time()*1000)
+        self.__django_any_seed = seed if seed else int(time.time() * 1000)
         random.seed(self.__django_any_seed)
         return func(self, *args, **kwargs)
     return _wrapper
@@ -129,7 +128,10 @@ class WithTestDataSeed(type):
         attrs['__django_any_seed'] = 0
 
         def shortDescription(self):
-            return "%s (%s) With seed %s" % (self._testMethodName,  _strclass(self.__class__), getattr(self, '__django_any_seed'))
+            return "%s (%s) With seed %s" % (
+                self._testMethodName, _strclass(self.__class__),
+                getattr(self, '__django_any_seed'),
+            )
 
         for name, func in attrs.items():
             if name.startswith('test') and hasattr(func, '__call__'):
@@ -144,4 +146,3 @@ class WithTestDataSeed(type):
         testcase = super(WithTestDataSeed, cls).__new__(cls, cls_name, bases, attrs)
         testcase.shortDescription = shortDescription
         return testcase
-

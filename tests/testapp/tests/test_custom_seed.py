@@ -1,4 +1,4 @@
-# -*- coding: utf-8; mode: django -*-
+# flake8: noqa
 from django.db import models
 from django.test import TestCase
 from django_any.models import any_field

@@ -152,15 +152,39 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=5)),
-                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='testapp.SelfReferencingModel')),
+                (
+                    'parent',
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='testapp.SelfReferencingModel',
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='RelationshipModelsWithDefaults',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('fk', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='related_fk', to='testapp.TargetModel')),
-                ('o2o', models.OneToOneField(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='related_o2o', to='testapp.TargetModel')),
+                (
+                    'fk',
+                    models.ForeignKey(
+                        default=1,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='related_fk',
+                        to='testapp.TargetModel',
+                    ),
+                ),
+                (
+                    'o2o',
+                    models.OneToOneField(
+                        default=1,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='related_o2o',
+                        to='testapp.TargetModel',
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
@@ -174,7 +198,10 @@ class Migration(migrations.Migration):
             name='RelatedToQObject',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('related', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='testapp.QObjectRelated')),
+                (
+                    'related',
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='testapp.QObjectRelated'),
+                ),
             ],
         ),
         migrations.CreateModel(
@@ -182,7 +209,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=5)),
-                ('related', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='testapp.OneToOneRelated')),
+                (
+                    'related',
+                    models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='testapp.OneToOneRelated'),
+                ),
             ],
         ),
         migrations.CreateModel(
@@ -191,14 +221,20 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('tag', models.SlugField()),
                 ('object_id', models.PositiveIntegerField()),
-                ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType')),
+                (
+                    'content_type',
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.ContentType'),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='ModelWithConstraintOnForeignKey',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('timestamp', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='testapp.ModelWithConstraint')),
+                (
+                    'timestamp',
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='testapp.ModelWithConstraint'),
+                ),
             ],
         ),
         migrations.CreateModel(

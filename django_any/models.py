@@ -1,5 +1,3 @@
-#-*- coding: utf-8 -*-
-# pylint: disable=E0102, W0613
 """
 Values generators for common Django Fields
 """
@@ -29,6 +27,7 @@ from django_any.functions import valid_choices, split_model_kwargs, ExtensionMet
 any_field = ExtensionMethod()
 any_model = ExtensionMethod(by_instance=True)
 
+
 @any_field.decorator
 def any_field_blank(function):
     """
@@ -45,7 +44,7 @@ def any_field_blank(function):
             else:
                 try:
                     return field.to_python('')
-                except ValidationError as e:  # bool, int, etc.
+                except ValidationError:  # bool, int, etc.
                     pass
 
         return function(field, **kwargs)
@@ -84,7 +83,7 @@ def any_biginteger_field(field, **kwargs):
     if six.PY3:
         long_type = int
     else:
-        long_type = long
+        long_type = long  # noqa
     return long_type(xunit.any_int(min_value=min_value, max_value=max_value))
 
 
@@ -201,11 +200,11 @@ def any_decimal_field(field, **kwargs):
     """
     min_value = kwargs.get('min_value', 0)
     max_value = kwargs.get('max_value',
-                           Decimal('%s.%s' % ('9'*(field.max_digits-field.decimal_places),
-                                              '9'*field.decimal_places)))
+                           Decimal('%s.%s' % ('9' * (field.max_digits - field.decimal_places),
+                                              '9' * field.decimal_places)))
     decimal_places = kwargs.get('decimal_places', field.decimal_places)
     return xunit.any_decimal(min_value=min_value, max_value=max_value,
-                             decimal_places = decimal_places)
+                             decimal_places=decimal_places)
 
 
 @any_field.register(models.EmailField)
@@ -216,7 +215,7 @@ def any_email_field(field, **kwargs):
     >>> result = any_field(models.EmailField())
     >>> type(result)
     <type 'str'>
-    >>> re.match(r"(?:^|\s)[-a-z0-9_.]+@(?:[-a-z0-9]+\.)+[a-z]{2,6}(?:\s|$)", result, re.IGNORECASE) is not None
+    >>> re.match(r"(?:^|\s)[-a-z0-9_.]+@(?:[-a-z0-9]+\.)+[a-z]{2,6}(?:\s|$)", result, re.IGNORECASE) is not None  # noqa
     True
     """
     return xunit.any_email()
@@ -285,7 +284,7 @@ def any_filepath_field(field, **kwargs):
             if os.path.isdir(entry_path):
                 subdirs.append(entry_path)
             else:
-                if not field.match or re.match(field.match,entry):
+                if not field.match or re.match(field.match, entry):
                     files.append(entry_path)
 
         if files:
@@ -392,7 +391,7 @@ def any_slug_field(field, **kwargs):
     True
     """
     letters = ascii_letters + digits + '_-'
-    return xunit.any_string(letters = letters, max_length = field.max_length)
+    return xunit.any_string(letters=letters, max_length=field.max_length)
 
 
 @any_field.register(models.SmallIntegerField)
@@ -446,9 +445,9 @@ def any_url_field(field, **kwargs):
     url = kwargs.get('url')
 
     if not url:
-        verified = [validator for validator in field.validators \
-                    if isinstance(validator, validators.URLValidator) and \
-                    getattr(validator, 'verify_exists', False) == True]
+        verified = [validator for validator in field.validators
+                    if isinstance(validator, validators.URLValidator) and
+                    getattr(validator, 'verify_exists', False)]
         if verified:
             url = random.choice(['http://news.yandex.ru/society.html',
                                  'http://video.google.com/?hl=en&tab=wv',
@@ -498,8 +497,8 @@ def _fill_model_fields(model, **kwargs):
     for field in model._meta.private_fields:
         if field.name in model_fields:
             object = kwargs[field.name]
-            model_fields[field.ct_field] = kwargs[field.ct_field]= ContentType.objects.get_for_model(object)
-            model_fields[field.fk_field] = kwargs[field.fk_field]= object.id
+            model_fields[field.ct_field] = kwargs[field.ct_field] = ContentType.objects.get_for_model(object)
+            model_fields[field.fk_field] = kwargs[field.fk_field] = object.id
     # fill local fields
     for field in model._meta.fields:
         if field.name in model_fields:
@@ -551,8 +550,7 @@ def any_model_default(model_cls, **kwargs):
                 result.full_clean()
                 result.save()
                 return result
-        except (IntegrityError, ValidationError) as ex:
+        except (IntegrityError, ValidationError):
             attempts -= 1
             if not attempts:
                 raise
-

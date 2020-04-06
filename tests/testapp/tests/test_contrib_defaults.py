@@ -1,4 +1,3 @@
-# -*- coding: utf-8; -*-
 import datetime
 from decimal import Decimal
 
@@ -12,23 +11,23 @@ from testapp.models import SimpleModelWithDefaults, TargetModel, \
 
 class AnyModelWithDefaults(TestCase):
     sample_args = dict(
-        big_integer_field = 1,
-        char_field = 'USA',
-        boolean_field = False,
-        date_field = datetime.date(2012, 12, 10),
-        datetime_field = datetime.datetime(1985, 12, 10),
-        decimal_field = Decimal('1.5'),
-        email_field = 'root@dev.null',
-        float_field = 1.5,
-        integer_field = 777,
-        ip_field = '1.2.3.4',
-        null_boolead_field = True,
-        positive_integer_field = 777,
-        small_integer = 12,
-        slug_field = 'some_model',
-        text_field = 'Here I come',
-        time_field = datetime.time(hour=9, minute=10, second=11),
-        url_field = 'http://google.com',
+        big_integer_field=1,
+        char_field='USA',
+        boolean_field=False,
+        date_field=datetime.date(2012, 12, 10),
+        datetime_field=datetime.datetime(1985, 12, 10),
+        decimal_field=Decimal('1.5'),
+        email_field='root@dev.null',
+        float_field=1.5,
+        integer_field=777,
+        ip_field='1.2.3.4',
+        null_boolead_field=True,
+        positive_integer_field=777,
+        small_integer=12,
+        slug_field='some_model',
+        text_field='Here I come',
+        time_field=datetime.time(hour=9, minute=10, second=11),
+        url_field='http://google.com',
     )
 
     def test_default_provided_called_with_no_args(self):
