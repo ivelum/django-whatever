@@ -1,8 +1,9 @@
 Unobtrusive test models creation for django
 
-**Current development of the package happens in https://github.com/ivelum/django-whatever.**
+Ivelum's repo is a friendly fork of the ``django-any`` package written by
+Mikhail Podgurskiy (kmmbvnr) and the original ``django-whatever`` repository
+created and maintained by Ilya Baryshev (coagulant)
 
-django-whatever is a friendly fork of ``django-any`` package written by Mikhail Podgurskiy (kmmbvnr)
 The purpose of the fork is to fix most annoying bugs and add `some features <http://django-whatever.readthedocs.org/en/latest/changelog.html>`_
 To remain compatible with original package ``django-whatever`` retains same namespace: ``django_any``.
 
