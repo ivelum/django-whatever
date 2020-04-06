@@ -3,6 +3,12 @@
 Changelog
 =========
 
+0.2.4
+~~~~~
+
+* A bunch of maintenance updates that happened during the "unmaintained" mode.
+* The last version with Django 1.11, 2.0, and 2.1 support
+
 0.2.3
 ~~~~~
 
