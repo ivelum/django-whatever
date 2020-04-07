@@ -3,6 +3,11 @@
 Changelog
 =========
 
+dev
+~~~
+
+* automated tests in Travis CI
+
 0.3.0
 ~~~~~
 
