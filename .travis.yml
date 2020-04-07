@@ -2,30 +2,19 @@ dist: xenial
 sudo: false
 language: python
 python:
-  - "2.7"
-  - "3.4"
   - "3.5"
   - "3.6"
   - "3.7"
+  - "3.8"
 env:
-  - DJANGO="Django>=1.11,<2.0" DB=sqlite
-  - DJANGO="Django>=2.0,<2.1" DB=sqlite
-  - DJANGO="Django>=2.1,<2.2" DB=sqlite
   - DJANGO="Django>=2.2,<3.0" DB=sqlite
+  - DJANGO="Django>=3.0,<3.1" DB=sqlite
 matrix:
   exclude:
-    - python: "2.7"
-      env: DJANGO="Django>=2.0,<2.1" DB=sqlite
-    - python: "2.7"
-      env: DJANGO="Django>=2.1,<2.2" DB=sqlite
-    - python: "2.7"
-      env: DJANGO="Django>=2.2,<3.0" DB=sqlite
-    - python: "3.4"
-      env: DJANGO="Django>=2.1,<2.2" DB=sqlite
-    - python: "3.4"
-      env: DJANGO="Django>=2.2,<3.0" DB=sqlite
+    - python: "3.5"
+      env: DJANGO="Django>=3.0,<3.1" DB=sqlite
 install:
-  - export PYTHONPATH=./django_any/:$PYTHONPATH
+  - export PYTHONPATH=./:$PYTHONPATH
   - pip install -U $DJANGO
   - pip install -r tests/requirements.txt
 script:
