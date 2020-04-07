@@ -12,11 +12,12 @@ env:
 jobs:
   include:
     - stage: codestyle
+      python: 3.8
       install:
         - pip install flake8 isort
       script:
         - flake8
-        - isort
+        - isort --recursive --check-only
   exclude:
     - python: "3.5"
       env: DJANGO="Django>=3.0,<3.1" DB=sqlite

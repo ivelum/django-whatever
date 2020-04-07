@@ -1,11 +1,15 @@
-from os import path
 import codecs
 import os
+from os import path
+
 from setuptools import setup
 
 os.environ['DJANGO_SETTINGS_MODULE'] = "testproject.settings"
 
-read = lambda filepath: codecs.open(filepath, 'r', 'utf-8').read()
+
+def read(filepath):
+    codecs.open(filepath, 'r', 'utf-8').read()
+
 
 setup(
     name='django-whatever',
