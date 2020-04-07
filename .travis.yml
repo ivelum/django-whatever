@@ -19,3 +19,10 @@ install:
   - pip install -r tests/requirements.txt
 script:
   - python tests/manage.py test testapp
+jobs:
+  include:
+  - python: 3.8
+    install:
+      - pip install flake8 isort
+    script:
+      - flake8 && isort
