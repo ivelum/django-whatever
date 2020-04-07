@@ -9,7 +9,14 @@ python:
 env:
   - DJANGO="Django>=2.2,<3.0" DB=sqlite
   - DJANGO="Django>=3.0,<3.1" DB=sqlite
-matrix:
+jobs:
+  include:
+    - stage: codestyle
+      install:
+        - pip install flake8 isort
+      script:
+        - flake8
+        - isort
   exclude:
     - python: "3.5"
       env: DJANGO="Django>=3.0,<3.1" DB=sqlite
@@ -19,10 +26,3 @@ install:
   - pip install -r tests/requirements.txt
 script:
   - python tests/manage.py test testapp
-jobs:
-  include:
-  - python: 3.8
-    install:
-      - pip install flake8 isort
-    script:
-      - flake8 && isort
