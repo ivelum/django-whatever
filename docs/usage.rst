@@ -3,7 +3,7 @@
 Models creation
 ===============
 
-You can get model instance saved in database without secifying any model fields::
+You can get model instance saved in database without secifying any model fields
 
 Given you have a simple polls model from django tutorial::
 
@@ -71,7 +71,7 @@ In case you need data from fixtures for creation of your models you can use ``Q`
 to select values for fields from db::
 
      order = any_model(Order, customer__location=Q(country='US'))
-     
+
 It will create an order for existing customer, whose country is US.
 
 
