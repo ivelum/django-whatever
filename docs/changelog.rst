@@ -7,6 +7,7 @@ dev
 ~~~
 
 * automated tests in Travis CI
+* fixed docs builds
 
 0.3.0
 ~~~~~
