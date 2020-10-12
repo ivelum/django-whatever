@@ -5,6 +5,7 @@ Changelog
 
 dev
 ~~~
+* run tests on Python 3.9
 
 0.3.1
 ~~~~~
