@@ -113,9 +113,10 @@ def decimal_field_data(field, **kwargs):
     >>> Decimal(result) >= 11, Decimal(result) <= Decimal('99.99')
     (True, True)
     """
+    from django.core.validators import MaxValueValidator, MinValueValidator
+
     min_value = 0
     max_value = 10
-    from django.core.validators import MinValueValidator, MaxValueValidator
     for elem in field.validators:
         if isinstance(elem, MinValueValidator):
             min_value = elem.limit_value
@@ -203,7 +204,7 @@ def float_field_data(field, **kwargs):
     """
     min_value = 0
     max_value = 100
-    from django.core.validators import MinValueValidator, MaxValueValidator
+    from django.core.validators import MaxValueValidator, MinValueValidator
     for elem in field.validators:
         if isinstance(elem, MinValueValidator):
             min_value = elem.limit_value
@@ -230,7 +231,7 @@ def integer_field_data(field, **kwargs):
     """
     min_value = 0
     max_value = 100
-    from django.core.validators import MinValueValidator, MaxValueValidator
+    from django.core.validators import MaxValueValidator, MinValueValidator
     for elem in field.validators:
         if isinstance(elem, MinValueValidator):
             min_value = elem.limit_value

@@ -17,7 +17,7 @@ jobs:
         - pip install flake8 isort
       script:
         - flake8
-        - isort --recursive --check-only
+        - isort --check-only .
   exclude:
     - python: "3.5"
       env: DJANGO="Django>=3.0,<3.1" DB=sqlite

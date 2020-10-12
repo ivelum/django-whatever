@@ -174,7 +174,7 @@ def any_datetime_field(field, **kwargs):
     from_date = kwargs.get('from_date', datetime(1990, 1, 1))
 
     if USE_TZ:
-        from django.utils.timezone import now, get_current_timezone, make_aware
+        from django.utils.timezone import get_current_timezone, make_aware, now
 
         from_date = make_aware(from_date, get_current_timezone())
         to_date = kwargs.get('to_date', now())
