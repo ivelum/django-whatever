@@ -6,6 +6,9 @@ Changelog
 dev
 ~~~
 
+0.3.1
+~~~~~
+
 * automated tests in Travis CI
 * fixed docs builds
 * fix "Invalid sequence" python warnings
