@@ -8,6 +8,7 @@ dev
 
 * automated tests in Travis CI
 * fixed docs builds
+* fix "Invalid sequence" python warnings
 
 0.3.0
 ~~~~~

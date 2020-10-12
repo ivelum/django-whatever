@@ -210,8 +210,9 @@ def any_email_field(field, **kwargs):
     >>> result = any_field(models.EmailField())
     >>> type(result)
     <type 'str'>
-    >>> re.match(r"(?:^|\s)[-a-z0-9_.]+@(?:[-a-z0-9]+\.)+[a-z]{2,6}(?:\s|$)", result, re.IGNORECASE) is not None  # noqa
-    True
+    >>> from django.core.validators import EmailValidator
+    >>> EmailValidator(result)
+    None
     """
     return xunit.any_email()
 

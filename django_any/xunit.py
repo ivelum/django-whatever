@@ -167,8 +167,9 @@ def any_email():
     >>> result = any_email()
     >>> type(result)
     <type 'str'>
-    >>> re.match(r"(?:^|\s)[-a-z0-9_.]+@(?:[-a-z0-9]+\.)+[a-z]{2,6}(?:\s|$)", result, re.IGNORECASE) is not None  # noqa
-    True
+    >>> from django.core.validators import EmailValidator
+    >>> EmailValidator(result)
+    None
     """
     return "%s@%s.%s" % (any_string(max_length=10),
                          any_string(max_length=10),
