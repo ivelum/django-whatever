@@ -38,7 +38,7 @@ jobs:
           key: pip-tests|${{ matrix.python }}|${{ matrix.django }}
       - run: pip install -r tests/requirements.txt
       - run: pip install -U Django==${{ matrix.django }}
-      - run: export PYTHONPATH=./:$PYTHONPATH
+      - run: pip install -U -e .
       - run: python tests/manage.py test testapp
   codestyle:
     runs-on: ubuntu-latest
