@@ -1,0 +1,65 @@
+name: Tests and codestyle
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: [3.5, 3.6, 3.7, 3.8, 3.9]
+        django: [2.2.*, 3.0.*, 3.1.*]
+        exclude:
+          - python: 3.5
+            django: 3.0.*
+          - python: 3.5
+            django: 3.1.*
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: update pip
+        run: |
+          pip install -U wheel
+          pip install -U setuptools
+          python -m pip install -U pip
+      - name: get pip cache dir
+        id: pip-cache
+        run: echo "::set-output name=dir::$(pip cache dir)"
+      - name: cache pip
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: pip-tests|${{ matrix.python }}|${{ matrix.django }}
+      - run: pip install -r tests/requirements.txt
+      - run: pip install -U Django==${{ matrix.django }}
+      - run: export PYTHONPATH=./:$PYTHONPATH
+      - run: python tests/manage.py test testapp
+  codestyle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      - name: update pip
+        run: |
+          pip install -U wheel
+          pip install -U setuptools
+          python -m pip install -U pip
+      - name: get pip cache dir
+        id: pip-cache
+        run: echo "::set-output name=dir::$(pip cache dir)"
+      - name: cache pip
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: pip-codestyle
+      - run: pip install -U flake8 isort
+      - run: flake8
+      - run: isort --check-only .
