@@ -6,6 +6,8 @@ Changelog
 dev
 ~~~
 * run tests on Python 3.9
+* add Django 3.1 to the tests matrix
+* move from Travis to GitHub actions for automated testing and linting
 
 0.3.1
 ~~~~~
